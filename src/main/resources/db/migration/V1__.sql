@@ -1,0 +1,7 @@
+CREATE TABLE cat
+(
+    id   BIGINT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(255) NULL,
+    age  INT NOT NULL,
+    CONSTRAINT pk_cat PRIMARY KEY (id)
+);

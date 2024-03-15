@@ -1,0 +1,67 @@
+package com.example.demo.cat;
+
+import com.example.demo.vaccination.Vaccination;
+import jakarta.annotation.Nonnull;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+public class Cat {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private int age;
+    private boolean chipped = false;
+
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "cat_id")
+    List<Vaccination> vaccinationList = new ArrayList<>();
+
+    public List<Vaccination> getVaccinationList() {
+        return vaccinationList;
+    }
+
+    public void setVaccinationList(List<Vaccination> vaccinationList) {
+        this.vaccinationList = vaccinationList;
+    }
+
+    public boolean isChipped() {
+        return chipped;
+    }
+
+    public void setChipped(boolean chipped) {
+        this.chipped = chipped;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void addVaccination(Vaccination vaccination){
+        vaccinationList.add(vaccination);
+    }
+
+}

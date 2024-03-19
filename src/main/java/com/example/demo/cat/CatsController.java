@@ -24,6 +24,12 @@ public class CatsController {
         return cats;
     }
 
+    @PostMapping("/cats")
+    ResponseEntity<Void> createCat(@RequestBody Cat cat) {
+        repository.save(cat);
+        return ResponseEntity.noContent().build();
+    }
+
 //    @PutMapping("/cats/{id}")
 //    ResponseEntity<Void> updateCat(@RequestBody Cat cat, @PathVariable Long id) {
 //        var cat1 = repository.findById(id);

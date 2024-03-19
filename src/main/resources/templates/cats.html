@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cats</title>
+</head>
+<body>
+<div>
+    <a href="http://localhost:8080/web/cats?lang=en">English</a>
+    <a href="http://localhost:8080/web/cats?lang=sv">Svenska</a>
+    <a th:href="@{${httpServletRequest.requestURI} + '?lang=de'}">Deutsch</a>
+</div>
+<h1 th:text="#{cats}"></h1>
+<p th:text="#{cats.welcome}"></p>
+<h2 th:text="${catCount}">0</h2>
+<p th:each="cat : ${catNames}" th:text="${cat}">NoName</p>
+<div th:unless="${catNames.isEmpty()}">
+    <p>We have cats</p>
+</div>
+</body>
+</html>

@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.List;

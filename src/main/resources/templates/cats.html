@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Cats</title>
+    <script src="http://localhost:35729/livereload.js"></script>
 </head>
 <body>
 <div>
@@ -15,7 +16,7 @@
 <h2 th:text="${catCount}">0</h2>
 <p th:each="cat : ${catNames}" th:text="${cat}">NoName</p>
 <div th:unless="${catNames.isEmpty()}">
-    <p>We have cats</p>
+    <p>We have cats!!</p>
 </div>
 </body>
 </html>

@@ -3,6 +3,8 @@ package com.example.demo.cat;
 import com.example.demo.cat.Cat;
 import com.example.demo.cat.CatRepository;
 import org.apache.coyote.http11.filters.VoidInputFilter;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,20 +14,30 @@ import java.util.List;
 public class CatsController {
 
     private final CatRepository repository;
+    private final CatService catService;
 
-    public CatsController(CatRepository repository) {
+    public CatsController(CatRepository repository, CatService catService) {
         this.repository = repository;
+        this.catService = catService;
     }
 
     @GetMapping("/cats")
-    List<Cat> cats() {
+    public List<Cat> cats() {
         var cats = repository.findAllBy();
         System.out.println("Done reading cats from database!");
         return cats;
     }
 
+    @GetMapping("/cats/{id}")
+    @Cacheable("cats")
+    public CatNameAndAge one(@PathVariable Long id) {
+        return catService.findOneById(id).orElse(null);
+    }
+
+
     @PostMapping("/cats")
-    ResponseEntity<Void> createCat(@RequestBody Cat cat) {
+    @CacheEvict(value = "catNames", allEntries = true)
+    public ResponseEntity<Void> createCat(@RequestBody Cat cat) {
         repository.save(cat);
         return ResponseEntity.noContent().build();
     }

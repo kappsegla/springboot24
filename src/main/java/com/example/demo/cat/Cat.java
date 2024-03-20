@@ -4,6 +4,7 @@ import com.example.demo.vaccination.Vaccination;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

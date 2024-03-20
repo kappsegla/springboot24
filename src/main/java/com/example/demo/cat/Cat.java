@@ -3,6 +3,10 @@ package com.example.demo.cat;
 import com.example.demo.vaccination.Vaccination;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.util.ArrayList;

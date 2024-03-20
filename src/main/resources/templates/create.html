@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Add a cat</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1>Form</h1>
+<form action="#" th:action="@{/web/create}" th:object="${formData}" method="post">
+    <p><label for="name" th:text="#{name} + ':'"/>
+        <input id="name" type="text" th:field="*{name}"/>
+    <p th:if="${#fields.hasErrors('name')}"
+       th:text="${#strings.listJoin(#fields.errors('name'), ', ')}"></p>
+    </p>
+    <p><label for="age" th:text="#{age} + ':'"/>
+        <input id="age" type="text" th:field="*{age}"/>
+    <p th:if="${#fields.hasErrors('age')}"
+       th:text="${#strings.listJoin(#fields.errors('age'), ', ')}"></p>
+    </p>
+    <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+</form>
+</body>
+</html>

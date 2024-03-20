@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 
@@ -23,7 +24,9 @@ public class CatsController {
 
     @GetMapping("/cats")
     public List<Cat> cats() {
-        var cats = repository.findAllBy();
+        var cats = repository.findAllBy().stream()
+                .peek(cat -> cat.setName(HtmlUtils.htmlEscape(cat.getName())))
+                .toList();
         System.out.println("Done reading cats from database!");
         return cats;
     }
@@ -36,9 +39,9 @@ public class CatsController {
 
 
     @PostMapping("/cats")
-    @CacheEvict(value = "catNames", allEntries = true)
     public ResponseEntity<Void> createCat(@RequestBody Cat cat) {
-        repository.save(cat);
+        catService.save(cat);
+
         return ResponseEntity.noContent().build();
     }
 
@@ -53,11 +56,11 @@ public class CatsController {
 //    }
 
     @PutMapping("/cats/{id}/chipped")
-    ResponseEntity<Void> setChipped(@PathVariable Long id){
-            var count = repository.setChipped(id);
-            if( count == 1)
-                return ResponseEntity.noContent().build();
-            else
-                return ResponseEntity.notFound().build();
+    ResponseEntity<Void> setChipped(@PathVariable Long id) {
+        var count = repository.setChipped(id);
+        if (count == 1)
+            return ResponseEntity.noContent().build();
+        else
+            return ResponseEntity.notFound().build();
     }
 }

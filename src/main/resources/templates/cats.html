@@ -12,11 +12,10 @@
     <a th:href="@{${httpServletRequest.requestURI} + '?lang=de'}">Deutsch</a>
 </div>
 <h1 th:text="#{cats}"></h1>
-<p th:text="#{cats.welcome}"></p>
-<h2 th:text="${catCount}">0</h2>
 <p th:each="cat : ${catNames}" th:text="${cat}">NoName</p>
-<div th:unless="${catNames.isEmpty()}">
-    <p>We have cats!!</p>
+<div th:if="${catNames.isEmpty()}">
+    <p>We have no cats</p>
 </div>
+<a href="/web/create" th:text="#{morecats}"></a>
 </body>
 </html>

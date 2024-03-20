@@ -10,9 +10,9 @@ public class CreateCatFormData {
     @NotNull
     @Size(min = 1, max = 100)
     private String name;
-    @Min(1)
+    @Min(0)
     @Max(50)
-    private int age;
+    private Integer age;
 
     public CreateCatFormData() {
     }
@@ -30,11 +30,11 @@ public class CreateCatFormData {
         this.name = name;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

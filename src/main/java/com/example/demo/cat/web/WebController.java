@@ -36,6 +36,9 @@ public class WebController {
         model.addAttribute("formData", new CreateCatFormData());
         return "create";
     }
+
+
+
     @PostMapping("create")
 
     public String greetingSubmit(@Valid @ModelAttribute("formData") CreateCatFormData cat,

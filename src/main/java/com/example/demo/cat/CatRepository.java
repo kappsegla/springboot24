@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.repository.ListPagingAndSortingRepository;
 
 import java.util.List;
 
-public interface CatRepository extends ListCrudRepository<Cat, Long> {
+public interface CatRepository extends ListPagingAndSortingRepository<Cat, Long>, ListCrudRepository<Cat, Long> {
     List<Cat> findByName(String name);
 
     @EntityGraph(attributePaths = {"vaccinationList"})

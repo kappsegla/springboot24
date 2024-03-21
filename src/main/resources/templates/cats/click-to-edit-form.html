@@ -1,0 +1,12 @@
+<tr hx-trigger='cancel' class='editing' th:attr="hx-get='/web/cats/' + ${cat.id}">
+    <td><input name="name" type="text" th:value="${cat.name}"/></td>
+    <td><input name="age" type="text" th:value="${cat.age}"/></td>
+    <td>
+        <button class="btn btn-danger" th:attr="hx-get='/web/cats/' + ${cat.id}">
+            Cancel
+        </button>
+        <button class="btn btn-danger" th:attr="hx-patch='/web/cats/' + ${cat.id}" hx-include="closest tr">
+            Save
+        </button>
+    </td>
+</tr>

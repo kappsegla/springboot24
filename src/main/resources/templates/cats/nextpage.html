@@ -1,0 +1,43 @@
+<tr th:each="cat: ${cats}">
+    <td th:text="${cat.name}"></td>
+    <td th:text="${cat.age}"></td>
+    <td>
+        <button class="btn btn-danger"
+                th:attr="hx-post='/web/cats/' + ${cat.id} + '/edit'"
+                hx-trigger="edit"
+                onClick="let editing = document.querySelector('.editing')
+                         if(editing) {
+                           Swal.fire({title: 'Already Editing',
+                                      showCancelButton: true,
+                                      confirmButtonText: 'Yep, Edit This Row!',
+                                      text:'Hey!  You are already editing a row!  Do you want to cancel that edit and continue?'})
+                           .then((result) => {
+                                if(result.isConfirmed) {
+                                   htmx.trigger(editing, 'cancel')
+                                   htmx.trigger(this, 'edit')
+                                }
+                            })
+                         } else {
+                            htmx.trigger(this, 'edit')
+                         }">
+            Edit
+        </button>
+    </td>
+    <td>
+        <button hx-confirm="Are you sure?"
+                hx-swap="outerHTML"
+                hx-trigger="click"
+                th:attr="hx-delete=@{/web/cats/{id}(id=${cat.id})}">
+            Delete
+        </button>
+    </td>
+</tr>
+<tr id="replaceMe">
+    <td colspan="3">
+        <button class='btn' th:attr="hx-get=@{/web/cats/nextpage(page=${nextpage})}"
+                hx-target="#replaceMe"
+                hx-swap="outerHTML">
+            Load More Agents... <img class="htmx-indicator" src="/img/bars.svg">
+        </button>
+    </td>
+</tr>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cats</title>
+    <!--    <script src="http://localhost:35729/livereload.js"></script>-->
+    <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
+</head>
+<body>
+<div>
+    <a th:href="@{${httpServletRequest.requestURI} + '?lang=en'}">English</a>
+    <a th:href="@{${httpServletRequest.requestURI} + '?lang=en'}">Svenska</a>
+    <!--    <a th:href="@{${httpServletRequest.requestURI} + '?lang=de'}">Deutsch</a>-->
+</div>
+<h1 th:text="#{cats}"></h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody hx-target="closest tr" hx-swap="outerHTML">
+    <tr th:each="cat: ${cats}">
+        <td th:text="${cat.name}"></td>
+        <td th:text="${cat.age}"></td>
+        <td>
+            <button class="btn btn-danger"
+                    th:attr="hx-post='/web/cats/' + ${cat.id} + '/edit'"
+                    hx-trigger="edit"
+                    onClick="let editing = document.querySelector('.editing')
+                         if(editing) {
+                           Swal.fire({title: 'Already Editing',
+                                      showCancelButton: true,
+                                      confirmButtonText: 'Yep, Edit This Row!',
+                                      text:'Hey!  You are already editing a row!  Do you want to cancel that edit and continue?'})
+                           .then((result) => {
+                                if(result.isConfirmed) {
+                                   htmx.trigger(editing, 'cancel')
+                                   htmx.trigger(this, 'edit')
+                                }
+                            })
+                         } else {
+                            htmx.trigger(this, 'edit')
+                         }">
+                Edit
+            </button>
+        </td>
+        <td>
+            <button hx-confirm="Are you sure?"
+                    hx-swap="outerHTML"
+                    hx-trigger="click"
+                    th:attr="hx-delete=@{/web/cats/{id}(id=${cat.id})}">
+                Delete
+            </button>
+        </td>
+    </tr>
+    <tr id="replaceMe">
+        <td colspan="3">
+            <button class='btn' th:attr="hx-get=@{/web/cats/nextpage(page=${nextpage})}"
+                    hx-target="#replaceMe"
+                    hx-swap="outerHTML">
+                Load More Agents... <img class="htmx-indicator" src="/img/bars.svg">
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div th:if="${cats.isEmpty()}">
+    <p>We have no cats</p>
+</div>
+<a href="/web/create" th:text="#{morecats}"></a>
+</body>
+</html>

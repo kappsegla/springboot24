@@ -40,6 +40,7 @@ public class CatService {
     }
 
     public List<Cat> getPage(int p, int i) {
-        return catRepository.findAll(PageRequest.of(p,i)).toList();
+//        return catRepository.findAll(PageRequest.of(p,i)).toList();
+        return catRepository.findCatsBy(p,i);
     }
 }

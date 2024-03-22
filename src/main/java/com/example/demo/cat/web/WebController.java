@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @Controller
 @RequestMapping("/web")
 public class WebController {
@@ -26,8 +28,9 @@ public class WebController {
 
     @GetMapping("cats")
     public String cats(Model model, HttpServletRequest httpServletRequest) {
-        model.addAttribute("nextpage", 1);
-        model.addAttribute("cats", catService.getPage(0, 10));
+        var cats = catService.getPage(0, 10);
+        model.addAttribute("nextpage", cats.getLast().getId());
+        model.addAttribute("cats", cats);
         model.addAttribute("httpServletRequest", httpServletRequest);
         return "cats/cats";
     }
@@ -35,8 +38,9 @@ public class WebController {
     @GetMapping("cats/nextpage")
     public String loadMore(Model model, @RequestParam(defaultValue = "1") String page) {
         int p = Integer.parseInt(page);
-        model.addAttribute("nextpage", p + 1);
-        model.addAttribute("cats", catService.getPage(p, 10));
+        var cats = catService.getPage(p, 10);
+        model.addAttribute("nextpage", cats.getLast().getId());
+        model.addAttribute("cats", cats);
         return "cats/nextpage";
     }
 
@@ -66,7 +70,6 @@ public class WebController {
         return "";
     }
 
-
     @GetMapping("/cats/{id}")
     public String oneCat(@PathVariable Long id, Model model) {
         var cat = catRepository.findById(id).get();
@@ -83,7 +86,7 @@ public class WebController {
         return "cats/click-to-edit-form";
     }
 
-    @PutMapping("/cats/{id}")
+    @PatchMapping("/cats/{id}")
     public String editPost(@ModelAttribute Cat cat, Model model) {
         catRepository.save(cat);
         return "cats/click-to-edit-default";

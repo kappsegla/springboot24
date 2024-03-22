@@ -24,4 +24,9 @@ public interface CatRepository extends ListPagingAndSortingRepository<Cat, Long>
     @Modifying
     @Transactional
     int setChipped(Long id);
+
+    @Query(value = """
+            select * from cat where id > ?1 limit ?2
+            """, nativeQuery = true)
+    List<Cat> findCatsBy(long cursor, int pageSize);
 }

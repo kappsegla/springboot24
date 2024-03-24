@@ -17,38 +17,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails user = User.withUsername("user")
-                .password(passwordEncoder.encode("password"))
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User.withUsername("admin")
-                .password(passwordEncoder.encode("admin"))
-                .roles("USER", "ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(user, admin);
-    }
-
-    //Password will be stored hashed with salt as: {bcrypt}$2a$10$MF7hYnWLeLT66gNccBgxaONZHbrSMjlUofkp50sSpBw2PJjUqU.zS
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        return encoder;
-    }
 
     @Bean
     SecurityFilterChain web(HttpSecurity http) throws Exception {
         http
-                .formLogin(Customizer.withDefaults())
-                .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/").authenticated()
-                        .requestMatchers("/login").permitAll()
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/", "/login", "/oauth/**", "/logout", "/error**").permitAll()
                         .requestMatchers("/web/create").hasRole("ADMIN")
-                        .anyRequest().permitAll());
-
+                        .anyRequest().authenticated()
+                )
+                .oauth2Login(Customizer.withDefaults());
         return http.build();
     }
 

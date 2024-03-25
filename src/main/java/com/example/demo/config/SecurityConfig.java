@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -44,11 +46,10 @@ public class SecurityConfig {
         http
                 .formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/").anonymous()
                         .requestMatchers("/login","/errors").permitAll()
-                        .requestMatchers("/web/cats").authenticated()
-                        .requestMatchers("/web/create").hasRole("ADMIN")
-                        .anyRequest().permitAll());
+                        .requestMatchers("/logout").authenticated()
+                        .requestMatchers("/web/cats/**").authenticated()
+                        .anyRequest().denyAll());
 
         return http.build();
     }

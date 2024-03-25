@@ -16,27 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @SpringBootApplication
-@EnableJpaAuditing
-@EnableCaching
 public class DemoApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }
 
-    @Bean
-    ApplicationRunner databaseInit(CatRepository catRepository) {
-        return args -> {
-            System.out.println("Running");
-            var result = catRepository.findByName("Misse");
-            if (result.isEmpty()) {
-                var cat = new Cat();
-                cat.setName("Misse");
-                cat.setAge(2);
-                cat.addVaccination(new Vaccination());
-                cat.addVaccination(new Vaccination());
-                catRepository.save(cat);
-            }
-        };
-    }
+
 }

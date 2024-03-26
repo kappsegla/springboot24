@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .requestMatchers("/login","/errors").permitAll()
                         .requestMatchers("/web/cats").authenticated()
                         .requestMatchers("/web/create").hasRole("ADMIN")
-                        .anyRequest().permitAll());
+                        .anyRequest().denyAll());
 
         return http.build();
     }

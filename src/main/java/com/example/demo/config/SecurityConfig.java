@@ -2,6 +2,8 @@ package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.Customizer;
@@ -13,8 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.client.RestClient;
 
 @Configuration
+@EnableRetry
 public class SecurityConfig {
 
 
@@ -24,6 +28,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/", "/login", "/oauth/**", "/logout", "/error**").permitAll()
                         .requestMatchers("/web/create").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(Customizer.withDefaults());
@@ -37,6 +42,11 @@ public class SecurityConfig {
         hierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER\n" +
                                "ROLE_USER > ROLE_GUEST");
         return hierarchy;
+    }
+
+    @Bean
+    RestClient restClient() {
+        return RestClient.create();
     }
 
 }

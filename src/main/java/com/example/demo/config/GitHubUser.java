@@ -6,6 +6,7 @@ public class GitHubUser {
     private String name;
     private String url;
     private String avatarUrl;
+    private String email;
 
     public void setUserId(String userId) {
         this.userId = userId;
@@ -45,5 +46,13 @@ public class GitHubUser {
 
     public String getLogin() {
         return login;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

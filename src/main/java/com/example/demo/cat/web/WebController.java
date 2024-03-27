@@ -3,6 +3,10 @@ package com.example.demo.cat.web;
 import com.example.demo.cat.CatService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,7 +26,9 @@ public class WebController {
     }
 
     @GetMapping("cats")
-    public String cats(Model model, HttpServletRequest httpServletRequest) {
+    public String cats(Model model, HttpServletRequest httpServletRequest,
+                       @AuthenticationPrincipal OAuth2User principal) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
         var cats = catService.allCatNames();
         model.addAttribute("catNames", cats);
         model.addAttribute("catCount", cats.size());
@@ -36,8 +42,6 @@ public class WebController {
         model.addAttribute("formData", new CreateCatFormData());
         return "create";
     }
-
-
 
     @PostMapping("create")
 

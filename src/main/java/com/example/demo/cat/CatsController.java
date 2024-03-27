@@ -12,6 +12,7 @@ import org.springframework.web.util.HtmlUtils;
 import java.util.List;
 
 @RestController
+@RequestMapping("api")
 public class CatsController {
 
     private final CatRepository repository;

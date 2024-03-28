@@ -11,6 +11,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -50,6 +51,13 @@ public class SecurityConfig {
         http
                 .securityMatcher("/api/**")
                 .csrf(AbstractHttpConfigurer::disable)
+                /*
+                always – A session will always be created if one doesn’t already exist.
+                ifRequired – A session will be created only if required (default).
+                never – The framework will never create a session itself, but it will use one if it already exists.
+                stateless – No session will be created or used by Spring Security.
+                 */
+                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.GET,"/api/cats/**").access(hasAnyScope("read","write","cats:read"))
                         .requestMatchers(HttpMethod.POST,"/api/cats/**").access(hasScope("write"))

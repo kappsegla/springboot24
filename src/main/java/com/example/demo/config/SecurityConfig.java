@@ -59,13 +59,13 @@ public class SecurityConfig {
                  */
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.GET,"/api/cats/**").access(hasAnyScope("read","write","cats:read"))
-                        .requestMatchers(HttpMethod.POST,"/api/cats/**").access(hasScope("write"))
-                        .requestMatchers(HttpMethod.PUT,"/api/cats/**").access(hasScope("write"))
+                        .requestMatchers(HttpMethod.GET, "/api/cats/**").access(hasAnyScope("read", "write", "cats:read"))
+                        .requestMatchers(HttpMethod.POST, "/api/cats/**").access(hasScope("write"))
+                        .requestMatchers(HttpMethod.PUT, "/api/cats/**").access(hasScope("write"))
                         .anyRequest().denyAll()
                 )
-                .oauth2ResourceServer((oauth2) -> oauth2
-                        .jwt(Customizer.withDefaults()));
+                .oauth2ResourceServer((oauth2) ->
+                        oauth2.jwt(Customizer.withDefaults()));
 
         return http.build();
     }

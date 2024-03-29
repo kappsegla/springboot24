@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,7 +28,7 @@ public class WebController {
 
     @GetMapping("cats")
     public String cats(Model model, HttpServletRequest httpServletRequest,
-                       @AuthenticationPrincipal OAuth2User principal) {
+                       @AuthenticationPrincipal OAuth2UserAuthority user) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         var cats = catService.allCatNames();
         model.addAttribute("catNames", cats);

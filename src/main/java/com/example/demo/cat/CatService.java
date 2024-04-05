@@ -1,5 +1,7 @@
 package com.example.demo.cat;
 
+import com.example.demo.MailSenderService;
+import com.example.demo.message.MessageService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,12 @@ import java.util.Optional;
 @Service
 public class CatService {
 
-    CatRepository catRepository;
+    private final CatRepository catRepository;
+    private final MessageService messageService;
 
-    public CatService(CatRepository catRepository){
+    public CatService(CatRepository catRepository, MessageService messageService){
         this.catRepository = catRepository;
+        this.messageService = messageService;
     }
 
     @Cacheable("catNames")
@@ -30,5 +34,6 @@ public class CatService {
     @CacheEvict(value = "catNames", allEntries = true)
     public void save(Cat cat) {
         catRepository.save(cat);
+        messageService.sendMessage("Hello " + cat.getName());
     }
 }

@@ -2,10 +2,12 @@ package com.example.demo;
 
 import com.example.demo.cat.Cat;
 import com.example.demo.cat.CatRepository;
+import com.example.demo.config.MailProperties;
 import com.example.demo.vaccination.Vaccination;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,7 @@ import java.util.List;
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableCaching
+@EnableConfigurationProperties(MailProperties.class)
 public class DemoApplication {
 
     public static void main(String[] args) {
